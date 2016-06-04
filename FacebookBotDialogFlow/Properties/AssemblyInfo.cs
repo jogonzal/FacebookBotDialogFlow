@@ -37,3 +37,4 @@ using System.Runtime.InteropServices;
 
 // Internals
 [assembly: InternalsVisibleTo("InternalsTestBot")]
+[assembly: InternalsVisibleTo("FacebookBotDialogFlowUnitTests")]

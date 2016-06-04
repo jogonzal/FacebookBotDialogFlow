@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Dialog\DialogOption.cs" />
     <Compile Include="DisplayUtils\DisplayUtils.cs" />
+    <Compile Include="Flow\BotFlow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
