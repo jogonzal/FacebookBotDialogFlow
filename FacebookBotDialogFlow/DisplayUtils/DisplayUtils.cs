@@ -7,12 +7,12 @@ using Microsoft.Bot.Connector;
 
 namespace FacebookBotDialogFlow.DisplayUtils
 {
-	public class DisplayUtils
+	internal class DisplayUtils
 	{
 		/// <summary>
 		/// Decorate a message so it displays options "facebook style"
 		/// </summary>
-		public static void AddActionsToMessage(Message message, string question, IList<DialogOption> dialogOptions)
+		internal static void AddActionsToMessage(Message message, string question, IList<DialogOption> dialogOptions)
 		{
 			List<Action> actions = dialogOptions.Select(n => new Action()
 			{
