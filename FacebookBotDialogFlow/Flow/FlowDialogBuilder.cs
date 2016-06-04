@@ -16,7 +16,7 @@ namespace FacebookBotDialogFlow.Flow
 			// Retrieve the dialog result
 			DialogOption response = await item;
 
-			if (response == null || response.NextFlow == null)
+			if (response?.NextFlow == null)
 			{
 				return Chain.Return("Done!");
 			}
