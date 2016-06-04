@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Http;
-
+using FacebookBotDialogFlow.Flow;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
 namespace BreakfastBot
@@ -8,6 +9,18 @@ namespace BreakfastBot
 	[BotAuthentication]
 	public class MessagesController : ApiController
 	{
+		public static BotFlow myBotFlow  =
+						BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.mysite.com/milk.png")
+							.WithOption("Yes",
+										BotFlow.DisplayMessage("Here's your milk."))
+							.WithOption("No",
+										BotFlow.DisplayMessage("Well, then what do you want?")
+										.WithOption("Cookies",
+											BotFlow.DisplayMessage("Here are your cookies"))
+										.WithOption("Waffles",
+											BotFlow.DisplayMessage("Here are your waffles"))
+										.WithOption("Nothing",
+											BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")));
 		/// <summary>
 		///     POST: api/Messages
 		///     Receive a message from a user and reply to it
@@ -16,12 +29,9 @@ namespace BreakfastBot
 		{
 			if (message.Type == "Message")
 			{
-				// calculate something for us to return
-				var length = (message.Text ?? string.Empty).Length;
-
-				// return our reply to the user
-				return message.CreateReplyMessage($"You sent {length} characters");
+				return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
 			}
+
 			return HandleSystemMessage(message);
 		}
 
