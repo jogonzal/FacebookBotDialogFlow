@@ -20,19 +20,34 @@ Options "No"
 With botflow, you can easily build a conversation diagram literally by writing this code:
 
 ```csharp
-var myBotFlow =
-BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.mysite.com/milk.png")
-	.WithOption("Yes",
-				BotFlow.DisplayMessage("Here's your milk."))
-	.WithOption("No",
-				BotFlow.DisplayMessage("Well, then what do you want?")
-				.WithOption("Cookies",
-					BotFlow.DisplayMessage("Here are your cookies"))
-				.WithOption("Waffles",
-					BotFlow.DisplayMessage("Here are your waffles"))
-				.WithOption("Nothing",
-					BotFlow.GetMessageAsync(MyOwnClass.GoogleSearchForTop10Breakfasts);
+[BotAuthentication]
+public class MessagesController : ApiController
+{
+	public async Task<Message> Post([FromBody] Message message)
+	{
+		if (message.Type == "Message")
+		{
+			BotFlow myBotFlow =
+					BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.wifss.ucdavis.edu/wp-content/uploads/2015/03/Milk-Pouring-istock-6x4.jpg")
+						.WithOption("Yes",
+									BotFlow.DisplayMessage("Here's your milk."))
+						.WithOption("No",
+									BotFlow.DisplayMessage("Well, then what do you want?")
+									.WithOption("Cookies",
+										BotFlow.DisplayMessage("Here are your cookies"))
+									.WithOption("Waffles",
+										BotFlow.DisplayMessage("Here are your waffles"))
+									.WithOption("Nothing"))
+					.FinishWith("You have been served breakfast!");
 
+			return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
+		}
+
+		return HandleSystemMessage(message);
+	}
+
+	...
+}
 return myBotFlow;
 									
 public static class MyOwnClass{
