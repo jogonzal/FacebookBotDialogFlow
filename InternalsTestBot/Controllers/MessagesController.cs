@@ -5,7 +5,8 @@ using System.Web.Http;
 using FacebookBotDialogFlow.Dialog;
 
 using FacebookBotDialogFlow.DisplayUtils;
-
+using FacebookBotDialogFlow.Flow;
+using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
 
@@ -28,9 +29,27 @@ namespace InternalsTesTBot.Controllers
 					DisplayUtils.AddActionsToMessage(reply, "MyQuestion",
 						new List<DialogOption>()
 						{
-							new DialogOption() {OptionString = "Option A"},
+							new DialogOption("Option A")
 						});
 					return reply;
+				}
+				else if (message.Text.ToLowerInvariant() == "countchars")
+				{
+					// calculate something for us to return
+					int length = (message.Text ?? string.Empty).Length;
+
+					// return our reply to the user
+					return message.CreateReplyMessage($"You sent {length} characters");
+				}
+				else if (message.Text.ToLowerInvariant() == "testdialog")
+				{
+					return await Conversation.SendAsync(message, () => new OptionsDialog(new BotFlow("Hello", null)
+					{
+						Options = new List<DialogOption>()
+						{
+							new DialogOption("dog")
+						}
+					}));
 				}
 				else
 				{
