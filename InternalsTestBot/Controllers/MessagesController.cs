@@ -26,11 +26,13 @@ namespace InternalsTesTBot.Controllers
 				if (message.Text.ToLowerInvariant() == "testui")
 				{
 					var reply = message.CreateReplyMessage();
-					DisplayUtils.AddActionsToMessage(reply, "MyQuestion",
-						new List<DialogOption>()
+					DisplayUtils.AddActionsToMessage(reply, new BotFlow("Hi!", null)
+					{
+						Options = new List<DialogOption>()
 						{
 							new DialogOption("Option A")
-						});
+						}
+					});
 					return reply;
 				}
 				else if (message.Text.ToLowerInvariant() == "countchars")

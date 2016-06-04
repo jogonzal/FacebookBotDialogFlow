@@ -26,7 +26,7 @@ namespace FacebookBotDialogFlow.Dialog
 		public async Task StartAsync(IDialogContext context)
 		{
 			var msg = context.MakeMessage();
-			DisplayUtils.DisplayUtils.AddActionsToMessage(msg, _botflow.Message, _botflow.Options);
+			DisplayUtils.DisplayUtils.AddActionsToMessage(msg, _botflow);
 			await context.PostAsync(msg);
 			if (_botflow.Options.Count > 0)
 			{

@@ -2,7 +2,7 @@
 using System.Linq;
 
 using FacebookBotDialogFlow.Dialog;
-
+using FacebookBotDialogFlow.Flow;
 using Microsoft.Bot.Connector;
 
 namespace FacebookBotDialogFlow.DisplayUtils
@@ -12,25 +12,25 @@ namespace FacebookBotDialogFlow.DisplayUtils
 		/// <summary>
 		/// Decorate a message so it displays options "facebook style"
 		/// </summary>
-		internal static void AddActionsToMessage(Message message, string question, IList<DialogOption> dialogOptions)
+		internal static void AddActionsToMessage(Message message, BotFlow flow)
 		{
-			List<Action> actions = dialogOptions.Select(n => new Action()
+			List<Action> actions = flow.Options.Select(n => new Action()
 			{
 				Title = n.OptionString,
-				Message = n.OptionString,
-				Url = null // framework does not support linking URLs yet
+				Message = n.OptionString
 			}).ToList();
 
 			message.Attachments = new List<Attachment>()
 				{
 					new Attachment()
 					{
-						Text = question,
-						Actions = actions
+						Text = flow.Message,
+						Actions = actions,
+						ThumbnailUrl = flow.ImageUrl
 					}
 				};
 
-			message.Text = question;
+			message.Text = flow.Message;
 		}
 	}
 }

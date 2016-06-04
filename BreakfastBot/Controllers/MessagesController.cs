@@ -4,12 +4,16 @@ using FacebookBotDialogFlow.Flow;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
-namespace BreakfastBot
+namespace BreakfastBot.Controllers
 {
 	[BotAuthentication]
 	public class MessagesController : ApiController
 	{
-		public static BotFlow myBotFlow  =
+		public async Task<Message> Post([FromBody] Message message)
+		{
+			if (message.Type == "Message")
+			{
+				BotFlow myBotFlow =
 						BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.mysite.com/milk.png")
 							.WithOption("Yes",
 										BotFlow.DisplayMessage("Here's your milk."))
@@ -22,14 +26,6 @@ namespace BreakfastBot
 										.WithOption("Nothing"))
 						.FinishWith("You have been served breakfast!");
 
-		/// <summary>
-		///     POST: api/Messages
-		///     Receive a message from a user and reply to it
-		/// </summary>
-		public async Task<Message> Post([FromBody] Message message)
-		{
-			if (message.Type == "Message")
-			{
 				return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
 			}
 
