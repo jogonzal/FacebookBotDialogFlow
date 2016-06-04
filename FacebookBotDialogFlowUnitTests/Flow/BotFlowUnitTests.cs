@@ -21,7 +21,8 @@ namespace FacebookBotDialogFlowUnitTests.Flow
 								.WithOption("Waffles",
 									BotFlow.DisplayMessage("Here are your waffles"))
 								.WithOption("Nothing",
-									BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")));
+									BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")))
+				.FinishWith("You have been served breakfast!");
 
 			myBotFlow.Message.Should().Be("Hello! Do you want milk?");
 			myBotFlow.ImageUrl.Should().Be("http://www.mysite.com/milk.png");
