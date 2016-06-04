@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookBotDialogFlow", "FacebookBotDialogFlow\FacebookBotDialogFlow.csproj", "{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacebookBotDialogFlowUnitTests", "FacebookBotDialogFlowUnitTests\FacebookBotDialogFlowUnitTests.csproj", "{B709EA17-627F-413F-B5CF-9AC0BADFE9B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleApps", "SampleApps", "{2B283C5B-C093-4C0F-9B3D-7D7AA49B827D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleBreakfastBot", "SampleBreakfastBot\SampleBreakfastBot.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B709EA17-627F-413F-B5CF-9AC0BADFE9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B709EA17-627F-413F-B5CF-9AC0BADFE9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B709EA17-627F-413F-B5CF-9AC0BADFE9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B709EA17-627F-413F-B5CF-9AC0BADFE9B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4} = {2B283C5B-C093-4C0F-9B3D-7D7AA49B827D}
+	EndGlobalSection
+EndGlobal
