@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 using FacebookBotDialogFlow.Dialog;
+using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
 
 namespace FacebookBotDialogFlow.Flow
 {
@@ -42,6 +44,19 @@ namespace FacebookBotDialogFlow.Flow
 				NextFlow = nextFlow
 			});
 			return this;
+		}
+
+		public IDialog<string> BuildDialogChain()
+		{
+			return Chain.PostToChain()
+				.Switch(
+					new Case<Message, IDialog<string>>((msg) => true, (IBotContext ctx, Message msg) =>
+					{
+						return Chain.ContinueWith(new OptionsDialog(this), FlowDialogBuilder.RecursiveCallToDialogs);
+					})
+				)
+				.Unwrap()
+				.PostToUser();
 		}
 	}
 }

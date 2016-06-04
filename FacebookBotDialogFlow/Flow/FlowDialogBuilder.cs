@@ -1,17 +1,16 @@
 ﻿using System.Threading.Tasks;
+
 using FacebookBotDialogFlow.Dialog;
+
 using Microsoft.Bot.Builder.Dialogs;
+using Microsoft.Bot.Connector;
 
 namespace FacebookBotDialogFlow.Flow
 {
 	public static class FlowDialogBuilder
 	{
-		public static IDialog<string> BuildDialogChain(this BotFlow botflow)
-		{
-			return new OptionsDialog(botflow).ContinueWith(RecursiveCallToDialogs);
-		}
 
-		private static async Task<IDialog<string>> RecursiveCallToDialogs(IBotContext context, IAwaitable<DialogOption> item)
+		public static async Task<IDialog<string>> RecursiveCallToDialogs(IBotContext context, IAwaitable<DialogOption> item)
 		{
 			// Retrieve the dialog result
 			DialogOption response = await item;
