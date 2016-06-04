@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleBreakfastBot</RootNamespace>
-    <AssemblyName>SampleBreakfastBot</AssemblyName>
+    <RootNamespace>InternalsTestBot</RootNamespace>
+    <AssemblyName>InternalsTestBot</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -113,6 +113,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FacebookBotDialogFlow\FacebookBotDialogFlow.csproj">
+      <Project>{6FB1A45E-431D-4C36-BE04-E7DCF3BA82A1}</Project>
+      <Name>FacebookBotDialogFlow</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <PropertyGroup>
@@ -133,7 +139,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>3978</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:3978/</IISUrl>
+          <IISUrl>http://localhost:3979/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
