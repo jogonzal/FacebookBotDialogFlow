@@ -19,8 +19,9 @@ namespace BreakfastBot
 											BotFlow.DisplayMessage("Here are your cookies"))
 										.WithOption("Waffles",
 											BotFlow.DisplayMessage("Here are your waffles"))
-										.WithOption("Nothing",
-											BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")));
+										.WithOption("Nothing"))
+						.FinishWith("You have been served breakfast!");
+
 		/// <summary>
 		///     POST: api/Messages
 		///     Receive a message from a user and reply to it

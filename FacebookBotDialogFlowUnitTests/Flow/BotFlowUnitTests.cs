@@ -13,19 +13,20 @@ namespace FacebookBotDialogFlowUnitTests.Flow
 			var myBotFlow =
 				BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.mysite.com/milk.png")
 					.WithOption("Yes",
-								BotFlow.DisplayMessage("Here's your milk."))
+						BotFlow.DisplayMessage("Here's your milk."))
 					.WithOption("No",
-								BotFlow.DisplayMessage("Well, then what do you want?")
-								.WithOption("Cookies",
-									BotFlow.DisplayMessage("Here are your cookies"))
-								.WithOption("Waffles",
-									BotFlow.DisplayMessage("Here are your waffles"))
-								.WithOption("Nothing",
-									BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")))
+						BotFlow.DisplayMessage("Well, then what do you want?")
+							.WithOption("Cookies",
+								BotFlow.DisplayMessage("Here are your cookies"))
+							.WithOption("Waffles",
+								BotFlow.DisplayMessage("Here are your waffles"))
+							.WithOption("Nothing",
+								BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")))
 				.FinishWith("You have been served breakfast!");
 
 			myBotFlow.Message.Should().Be("Hello! Do you want milk?");
 			myBotFlow.ImageUrl.Should().Be("http://www.mysite.com/milk.png");
+			myBotFlow.CompletionMessage.Should().Be("You have been served breakfast!");
 			myBotFlow.Options.Count.Should().Be(2);
 			myBotFlow.Options[0].OptionString.Should().Be("Yes");
 			myBotFlow.Options[1].OptionString.Should().Be("No");

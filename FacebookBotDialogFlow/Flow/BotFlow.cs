@@ -39,7 +39,7 @@ namespace FacebookBotDialogFlow.Flow
 		/// <summary>
 		/// Add an option to a message as a reply button
 		/// </summary>
-		public BotFlow WithOption(string optionString, BotFlow nextFlow)
+		public BotFlow WithOption(string optionString, BotFlow nextFlow = null)
 		{
 			Options.Add(new DialogOption(optionString)
 			{
@@ -77,7 +77,7 @@ namespace FacebookBotDialogFlow.Flow
 
 			if (response?.NextFlow == null)
 			{
-				return Chain.Return(CompletionMessage);
+				return Chain.Return(CompletionMessage ?? "The dialog is complete!");
 			}
 			else
 			{
