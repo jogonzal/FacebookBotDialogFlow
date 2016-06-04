@@ -26,11 +26,11 @@ namespace FacebookBotDialogFlowUnitTests.Flow
 			myBotFlow.Message.Should().Be("Hello! Do you want milk?");
 			myBotFlow.ImageUrl.Should().Be("http://www.mysite.com/milk.png");
 			myBotFlow.Options.Count.Should().Be(2);
-			myBotFlow.Options[0].Item1.OptionString.Should().Be("Yes");
-			myBotFlow.Options[1].Item1.OptionString.Should().Be("No");
-			myBotFlow.Options[0].Item2.Options.Should().BeEmpty();
-			myBotFlow.Options[0].Item2.Message.Should().Be("Here's your milk.");
-			myBotFlow.Options[1].Item2.Options.Should().HaveCount(3);
+			myBotFlow.Options[0].OptionString.Should().Be("Yes");
+			myBotFlow.Options[1].OptionString.Should().Be("No");
+			myBotFlow.Options[0].NextFlow.Options.Should().BeEmpty();
+			myBotFlow.Options[0].NextFlow.Message.Should().Be("Here's your milk.");
+			myBotFlow.Options[1].NextFlow.Options.Should().HaveCount(3);
 		}
 	}
 }

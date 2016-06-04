@@ -1,7 +1,18 @@
-﻿namespace FacebookBotDialogFlow.Dialog
+﻿using System;
+using FacebookBotDialogFlow.Flow;
+
+namespace FacebookBotDialogFlow.Dialog
 {
-	internal class DialogOption
+	[Serializable]
+	public class DialogOption
 	{
-		internal string OptionString { get; set; }
+		public DialogOption(string option)
+		{
+			OptionString = option;
+		}
+
+		internal string OptionString { get; }
+
+		internal BotFlow NextFlow { get; set; }
 	}
 }
