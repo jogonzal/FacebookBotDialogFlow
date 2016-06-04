@@ -15,16 +15,37 @@ namespace FacebookBotDialogFlow.Flow
 	[Serializable]
 	public class BotFlow
 	{
-		internal string ImageUrl { get; }
-		internal string Message { get; }
+		private readonly Func<Task<string>> _messageCalculatingFunction;
+		private string _message;
+
+		internal string ImageUrl { get; set; }
+
+		internal async Task<string> GetMessage()
+		{
+			return await _messageCalculatingFunction();
+		}
+
 		internal string CompletionMessage { get; set; }
 
 		internal IList<DialogOption> Options { get; set; } 
 
 		internal BotFlow(string message, string imageUrl)
 		{
-			this.Message = message;
+			this._message = message;
+			this._messageCalculatingFunction = RetrieveMessageSyncrhonously;
+
 			this.ImageUrl = imageUrl;
+			this.Options = new List<DialogOption>();
+		}
+
+		private Task<string> RetrieveMessageSyncrhonously()
+		{
+			return Task.FromResult(_message);
+		}
+
+		private BotFlow(Func<Task<string>> messageCalculatingFunction)
+		{
+			_messageCalculatingFunction = messageCalculatingFunction;
 			this.Options = new List<DialogOption>();
 		}
 
@@ -57,6 +78,22 @@ namespace FacebookBotDialogFlow.Flow
 			return this;
 		}
 
+		public BotFlow WithOptionLink(string message, string optionLink)
+		{
+			Options.Add(new DialogOption(message)
+			{
+				NextFlow = null,
+				Url = optionLink
+			});
+			return this;
+		}
+
+		public BotFlow WithThumbnail(string thumbNailUrl)
+		{
+			ImageUrl = thumbNailUrl;
+			return this;
+		}
+
 		public IDialog<string> BuildDialogChain()
 		{
 			return Chain.PostToChain()
@@ -84,6 +121,11 @@ namespace FacebookBotDialogFlow.Flow
 				// Recurse into data structure
 				return new OptionsDialog(response.NextFlow).ContinueWith(RecursiveCallToDialogs);
 			}
+		}
+
+		public static BotFlow CalculateMessage(Func<Task<string>> messageCalculatingFunction)
+		{
+			return new BotFlow(messageCalculatingFunction);
 		}
 	}
 }

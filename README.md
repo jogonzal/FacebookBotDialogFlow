@@ -1,10 +1,12 @@
 # FacebookBotDialogFlow
-A framework for building simple Facebook bots that communicate based with dialogs
+A framework for building simple Facebook bots that communicate based on dialogs that use buttons like these:
 
-Facebook provides relatively APIs that allow bots to display options as buttons. Keeping state for those options, knowing how to build the payload for displaying options and how to implement dialogs can be hard. Usually, what we know is the dialog flow - like this:
+![Alt text](/dialog.png?raw=true "Facebook dialog example")
+
+Facebook provides APIs that allow bots to display options as buttons. Keeping state for those options, knowing how to build the payload for displaying them interpreting answers can be hard. Usually, when we design a bot we have clarity on the following:
 
 ```
-StartMessage: "Hello! Do you want milk?" - (also, display an image of milk)
+StartMessage: "Hello I am breakfastbot and will do my best to serve you breakfast! Do you want milk?"
 Options "Yes"
 	Message "Here's your milk!"
 Options "No"
@@ -14,45 +16,58 @@ Options "No"
 	Options "Waffles"
 		Message "Here are your waffles"
 	Options "Nothing"
-		Message "I tried!" - (also, display the top 10 google results for breakfast)
+		// Consult a database and build a list of other potential breakfasts based on this
+		Message "Maybe you want some ideas? IDEAS HERE Do these sound any good?"
+		Options "Yes"
+			Message "Here's a link to our website"
+		Options "No"
+			Message "You must be kidding! Everybody loves breakfast!"
+EndMessage: 
 ```
 
-With botflow, you can easily build a conversation diagram literally by writing this code:
+With this DSL, you're able to write the dialog flow in a fashion that very closely ressembles your flow diagrams :grinning:
 
 ```csharp
-[BotAuthentication]
-public class MessagesController : ApiController
-{
-	public async Task<Message> Post([FromBody] Message message)
-	{
-		if (message.Type == "Message")
-		{
-			BotFlow myBotFlow =
-					BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.wifss.ucdavis.edu/wp-content/uploads/2015/03/Milk-Pouring-istock-6x4.jpg")
-						.WithOption("Yes",
-									BotFlow.DisplayMessage("Here's your milk."))
-						.WithOption("No",
-									BotFlow.DisplayMessage("Well, then what do you want?")
-									.WithOption("Cookies",
-										BotFlow.DisplayMessage("Here are your cookies"))
-									.WithOption("Waffles",
-										BotFlow.DisplayMessage("Here are your waffles"))
-									.WithOption("Nothing"))
-					.FinishWith("You have been served breakfast!");
+BotFlow myBotFlow =
+		BotFlow.DisplayMessage("Hello I am breakfastbot and will do my best to serve you breakfast! Do you want milk?")
+			.WithThumbnail("http://www.mysite.com/milk.png")
+			.WithOption("Yes",
+				BotFlow.DisplayMessage("Here's your milk."))
+			.WithOption("No",
+				BotFlow.DisplayMessage("Well, then what do you want? ;)")
+				.WithOption("Cookies",
+					BotFlow.DisplayMessage("Here are your cookies"))
+				.WithOption("Waffles",
+					BotFlow.DisplayMessage("Here are your waffles"))
+				.WithOption("Nothing",
+					BotFlow.CalculateMessage(async () =>
+					{
+						// Retrieve breakfast from database
+						string top10Breakfasts = await DatabaseLookup.GetTop10Breakfasts();
+						return "Maybe you want some ideas - here are the top 10 breakfasts according to our database: " + top10Breakfasts +
+						". Do any of these sound good?";
+					})
+					.WithOption("Yes",
+						BotFlow.DisplayMessage("Great! Click here to browse to our breakfast webpage to find them.")
+						.WithOptionLink("Breakfast website", "http://www.microsoft.com")
+					)
+					.WithOption("No",
+						BotFlow.DisplayMessage("You must be kidding - everybody likes breakfast!")
+					)
+			)
+		)
+		.FinishWith("Have a great day!");
 
-			return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
-		}
-
-		return HandleSystemMessage(message);
-	}
-
-	...
-}
-return myBotFlow;
-									
-public static class MyOwnClass{
-	public static async Task<BotDialogMessage> GoogleSearchForTop10Breakfasts(){
-		// Make a web request here...
-	}
-}
+return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
 ```
+
+Using these data structures you can form conditions, loops, and take action to successfully interact with your user through a bot.
+
+This library uses the Microsoft Bot Framework. See "BreakFastBot" project as an example.
+
+### Development
+
+1. Install Visual studio community edition 2015
+2. Open FacebookBotDialogFlow.sln
+3. To run a sample, set it as a startup project and hit "run"
+4. You can use the Microsoft bot framework bot emulator to interact with the bot

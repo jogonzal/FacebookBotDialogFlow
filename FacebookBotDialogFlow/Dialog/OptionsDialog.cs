@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using FacebookBotDialogFlow.Flow;
@@ -26,9 +27,9 @@ namespace FacebookBotDialogFlow.Dialog
 		public async Task StartAsync(IDialogContext context)
 		{
 			var msg = context.MakeMessage();
-			DisplayUtils.DisplayUtils.AddActionsToMessage(msg, _botflow);
+			await DisplayUtils.DisplayUtils.AddActionsToMessage(msg, _botflow);
 			await context.PostAsync(msg);
-			if (_botflow.Options.Count > 0)
+			if (_botflow.Options != null && _botflow.Options.Where(o => o.Url == null).Count() > 0)
 			{
 				context.Wait(MessageReceivedAsync);
 			}

@@ -1,4 +1,5 @@
-﻿using FacebookBotDialogFlow.Flow;
+﻿using System.Threading.Tasks;
+using FacebookBotDialogFlow.Flow;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,7 +9,7 @@ namespace FacebookBotDialogFlowUnitTests.Flow
 	public class BotFlowUnitTests
 	{
 		[TestMethod]
-		public void BotFlow_BuildSimpleDataStructure_Verify()
+		public async Task BotFlow_BuildSimpleDataStructure_Verify()
 		{
 			var myBotFlow =
 				BotFlow.DisplayMessage("Hello! Do you want milk?", "http://www.mysite.com/milk.png")
@@ -24,14 +25,14 @@ namespace FacebookBotDialogFlowUnitTests.Flow
 								BotFlow.DisplayMessage("Sorry, I don't have anything else for breakfast!")))
 				.FinishWith("You have been served breakfast!");
 
-			myBotFlow.Message.Should().Be("Hello! Do you want milk?");
+			(await myBotFlow.GetMessage()).Should().Be("Hello! Do you want milk?");
 			myBotFlow.ImageUrl.Should().Be("http://www.mysite.com/milk.png");
 			myBotFlow.CompletionMessage.Should().Be("You have been served breakfast!");
 			myBotFlow.Options.Count.Should().Be(2);
 			myBotFlow.Options[0].OptionString.Should().Be("Yes");
 			myBotFlow.Options[1].OptionString.Should().Be("No");
 			myBotFlow.Options[0].NextFlow.Options.Should().BeEmpty();
-			myBotFlow.Options[0].NextFlow.Message.Should().Be("Here's your milk.");
+			(await myBotFlow.Options[0].NextFlow.GetMessage()).Should().Be("Here's your milk.");
 			myBotFlow.Options[1].NextFlow.Options.Should().HaveCount(3);
 		}
 	}
