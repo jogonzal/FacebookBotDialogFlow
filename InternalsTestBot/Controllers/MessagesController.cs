@@ -26,7 +26,7 @@ namespace InternalsTesTBot.Controllers
 				if (message.Text.ToLowerInvariant() == "testui")
 				{
 					var reply = message.CreateReplyMessage();
-					DisplayUtils.AddActionsToMessage(reply, new BotFlow("Hi!", null)
+					await DisplayUtils.AddActionsToMessage(reply, new BotFlow("Hi!", null)
 					{
 						Options = new List<DialogOption>()
 						{
