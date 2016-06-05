@@ -7,6 +7,9 @@ A framework for building simple Facebook bots that communicate based on dialogs 
 1. Implementation of DSL is in "FacebookBotDialogFlow"
 2. Implementation of sample bots is described above and in SampleBots/BreakfastBot and SampleBots/QuizBot
 
+## Sample app demo video
+The video link is [here](https://www.youtube.com/watch?v=eo0pG4JMVSc&feature=youtu.be)
+
 ### Development
 
 1. Install Visual studio community edition 2015
