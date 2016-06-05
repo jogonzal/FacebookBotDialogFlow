@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using FacebookBotDialogFlow.Dialog;
@@ -15,20 +16,43 @@ namespace FacebookBotDialogFlow.Flow
 	[Serializable]
 	public class BotFlow
 	{
+		/// <summary>
+		/// This function is called to retrieve the message - this might be done asynchronously
+		/// </summary>
 		private readonly Func<Task<string>> _messageCalculatingFunction;
+
+		/// <summary>
+		/// If there's a static message, it will be stored here
+		/// </summary>
 		private string _message;
 
+		/// <summary>
+		/// The image url, if any
+		/// </summary>
 		internal string ImageUrl { get; set; }
 
+		/// <summary>
+		/// Retrieves the message
+		/// </summary>
+		/// <returns></returns>
 		internal async Task<string> GetMessage()
 		{
 			return await _messageCalculatingFunction();
 		}
 
+		/// <summary>
+		/// Message displayed at the end of the flow
+		/// </summary>
 		internal string CompletionMessage { get; set; }
 
+		/// <summary>
+		/// Options for this flow the user can click on
+		/// </summary>
 		internal IList<DialogOption> Options { get; set; } 
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		internal BotFlow(string message, string imageUrl)
 		{
 			this._message = message;
@@ -38,15 +62,21 @@ namespace FacebookBotDialogFlow.Flow
 			this.Options = new List<DialogOption>();
 		}
 
-		private Task<string> RetrieveMessageSyncrhonously()
-		{
-			return Task.FromResult(_message);
-		}
-
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		private BotFlow(Func<Task<string>> messageCalculatingFunction)
 		{
 			_messageCalculatingFunction = messageCalculatingFunction;
 			this.Options = new List<DialogOption>();
+		}
+
+		/// <summary>
+		/// Retrieves the stored message (For serialization purposes
+		/// </summary>
+		private Task<string> RetrieveMessageSyncrhonously()
+		{
+			return Task.FromResult(_message);
 		}
 
 		/// <summary>
@@ -56,6 +86,16 @@ namespace FacebookBotDialogFlow.Flow
 		{
 			return new BotFlow(message, imageUrl);
 		}
+
+		/// <summary>
+		/// Display a message to the user that will be calculated
+		/// </summary>
+		public static BotFlow CalculateMessage(Func<Task<string>> messageCalculatingFunction)
+		{
+			return new BotFlow(messageCalculatingFunction);
+		}
+
+		#region Fluent API
 
 		/// <summary>
 		/// Add an option to a message as a reply button
@@ -94,6 +134,12 @@ namespace FacebookBotDialogFlow.Flow
 			return this;
 		}
 
+		#endregion
+
+		/// <summary>
+		/// Transforms a BotFlow into a dialog chain for the Microsoft bot framework
+		/// </summary>
+		/// <returns></returns>
 		public IDialog<string> BuildDialogChain()
 		{
 			return Chain.PostToChain()
@@ -107,6 +153,9 @@ namespace FacebookBotDialogFlow.Flow
 				.PostToUser();
 		}
 
+		/// <summary>
+		/// Recursively calls dialogs based on user input - basically asyncrhonously traverses the botflow graph
+		/// </summary>
 		public async Task<IDialog<string>> RecursiveCallToDialogs(IBotContext context, IAwaitable<DialogOption> item)
 		{
 			// Retrieve the dialog result
@@ -123,9 +172,22 @@ namespace FacebookBotDialogFlow.Flow
 			}
 		}
 
-		public static BotFlow CalculateMessage(Func<Task<string>> messageCalculatingFunction)
+		/// <summary>
+		/// Given a user input, try to get the next option (if possible)
+		/// </summary>
+		public bool TryGetAnswer(string text, out DialogOption result)
 		{
-			return new BotFlow(messageCalculatingFunction);
+			var resultOption = Options.Where(o => o.OptionString.ToLowerInvariant() == text.ToLowerInvariant());
+			if (!resultOption.Any())
+			{
+				result = null;
+				return false;
+			}
+			else
+			{
+				result = resultOption.First();
+				return true;
+			}
 		}
 	}
 }

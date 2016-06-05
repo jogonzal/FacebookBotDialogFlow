@@ -83,8 +83,6 @@
     <Compile Include="Dialog\OptionsDialog.cs" />
     <Compile Include="DisplayUtils\DisplayUtils.cs" />
     <Compile Include="Flow\BotFlow.cs" />
-    <Compile Include="Flow\BotFlowExtensions.cs" />
-    <Compile Include="Flow\FlowDialogBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,9 @@ A framework for building simple Facebook bots that communicate based on dialogs 
 
 ## Design rationale
 
-The facebook bot framework provides APIs that allow us to build bots - we can interact with them by talking or having them display options as buttons and clicking/tapping them. Certain types of bots are designed based on a flow chart that says what we are going to tell to the user and how we are going to react based on user input.
+The facebook bot framework provides APIs that allow us to build bots - we can interact with them by writing text or having them display options as buttons and clicking/tapping them. This DSL focuses on the latter.
+
+These types of bots tend to be designed based on a flow chart that determines the things they will say to the user and how they are going to react based on user input.
 
 One flowchart we can use as an example is the following for "Breakfastbot":
 
