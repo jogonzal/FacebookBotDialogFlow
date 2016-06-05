@@ -58,6 +58,8 @@ namespace FacebookBotDialogFlow.Dialog
 			}
 			else
 			{
+				// Now that we know which dialog will be run next, perform it's actions
+				option.NextFlow.PerformActions();
 				context.Done(option);
 			}
 		}

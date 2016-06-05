@@ -56,6 +56,7 @@ namespace FacebookBotDialogFlow.Flow
 
 			this.ImageUrl = imageUrl;
 			this.Options = new List<DialogOption>();
+			this.ActionsToPerformWhenCalled = new List<Action>();
 		}
 
 		/// <summary>
@@ -65,6 +66,7 @@ namespace FacebookBotDialogFlow.Flow
 		{
 			_messageCalculatingFunction = messageCalculatingFunction;
 			this.Options = new List<DialogOption>();
+			this.ActionsToPerformWhenCalled = new List<Action>();
 		}
 
 		/// <summary>
@@ -84,7 +86,7 @@ namespace FacebookBotDialogFlow.Flow
 			return Task.FromResult(_message);
 		}
 
-		public void PerformAtions()
+		public void PerformActions()
 		{
 			foreach (var action in ActionsToPerformWhenCalled)
 			{
@@ -157,6 +159,7 @@ namespace FacebookBotDialogFlow.Flow
 
 		public BotFlow Do(System.Action action)
 		{
+			ActionsToPerformWhenCalled.Add(action);
 			return this;
 		}
 
