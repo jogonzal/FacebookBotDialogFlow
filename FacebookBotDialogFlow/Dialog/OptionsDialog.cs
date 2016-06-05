@@ -33,6 +33,7 @@ namespace FacebookBotDialogFlow.Dialog
 			var msg = context.MakeMessage();
 			await DisplayUtils.DisplayUtils.AddActionsToMessage(msg, _botflow);
 			await context.PostAsync(msg);
+
 			if (_botflow.Options != null && _botflow.Options.Where(o => o.Url == null).Count() > 0)
 			{
 				context.Wait(MessageReceivedAsync);
