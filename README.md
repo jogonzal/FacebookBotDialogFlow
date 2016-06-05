@@ -47,13 +47,16 @@ BotFlow myBotFlow =
 		BotFlow.DisplayMessage("Hello I am breakfastbot and will do my best to serve you breakfast! Do you want milk?")
 			.WithThumbnail("http://www.mysite.com/milk.png")
 			.WithOption("Yes",
-				BotFlow.DisplayMessage("Here's your milk."))
+				BotFlow.DisplayMessage("Here's your milk.")
+				.Do(() => Ordering.OrderMilk()))
 			.WithOption("No",
 				BotFlow.DisplayMessage("Well, then what do you want? ;)")
 				.WithOption("Cookies",
-					BotFlow.DisplayMessage("Here are your cookies"))
+					BotFlow.DisplayMessage("Here are your cookies")
+					.Do(() => Ordering.OrderCookies()))
 				.WithOption("Waffles",
-					BotFlow.DisplayMessage("Here are your waffles"))
+					BotFlow.DisplayMessage("Here are your waffles")
+					.Do(() => Ordering.OrderWaffles()))
 				.WithOption("Nothing",
 					BotFlow.CalculateMessage(async () =>
 					{

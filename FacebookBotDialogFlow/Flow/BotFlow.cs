@@ -7,6 +7,7 @@ using FacebookBotDialogFlow.Dialog;
 
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Action = System.Action;
 
 namespace FacebookBotDialogFlow.Flow
 {
@@ -24,22 +25,12 @@ namespace FacebookBotDialogFlow.Flow
 		/// <summary>
 		/// If there's a static message, it will be stored here
 		/// </summary>
-		private string _message;
+		private readonly string _message;
 
 		/// <summary>
 		/// The image url, if any
 		/// </summary>
 		internal string ImageUrl { get; set; }
-
-		/// <summary>
-		/// Retrieves the message
-		/// </summary>
-		/// <returns></returns>
-		internal async Task<string> GetMessage()
-		{
-			return await _messageCalculatingFunction();
-		}
-
 		/// <summary>
 		/// Message displayed at the end of the flow
 		/// </summary>
@@ -48,7 +39,12 @@ namespace FacebookBotDialogFlow.Flow
 		/// <summary>
 		/// Options for this flow the user can click on
 		/// </summary>
-		internal IList<DialogOption> Options { get; set; } 
+		internal IList<DialogOption> Options { get; set; }
+
+		/// <summary>
+		/// These will be called when the botflow starts
+		/// </summary>
+		internal List<Action> ActionsToPerformWhenCalled;
 
 		/// <summary>
 		/// Constructor
@@ -72,11 +68,36 @@ namespace FacebookBotDialogFlow.Flow
 		}
 
 		/// <summary>
+		/// Retrieves the message
+		/// </summary>
+		/// <returns></returns>
+		internal async Task<string> GetMessage()
+		{
+			return await _messageCalculatingFunction();
+		}
+
+		/// <summary>
 		/// Retrieves the stored message (For serialization purposes
 		/// </summary>
 		private Task<string> RetrieveMessageSyncrhonously()
 		{
 			return Task.FromResult(_message);
+		}
+
+		public void PerformAtions()
+		{
+			foreach (var action in ActionsToPerformWhenCalled)
+			{
+				try
+				{
+					action();
+				}
+				catch (Exception ex)
+				{
+					// Tolerate exceptions
+					continue;
+				}
+			}
 		}
 
 		/// <summary>
@@ -131,6 +152,11 @@ namespace FacebookBotDialogFlow.Flow
 		public BotFlow WithThumbnail(string thumbNailUrl)
 		{
 			ImageUrl = thumbNailUrl;
+			return this;
+		}
+
+		public BotFlow Do(System.Action action)
+		{
 			return this;
 		}
 
