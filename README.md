@@ -81,6 +81,48 @@ return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain())
 
 Using these data structures you can form conditions, loops, and a flow to successfully interact with your user through a bot - the code closely ressembles the flowchart described above and will be easier to write and maintain.
 
+## Example 2: Quizbot
+
+```csharp
+// Notice how we report scores on every wrong answer or every completed quiz
+var wrongAnswerBotFlow = BotFlow.DisplayMessage("Wrong answer!")
+						.Do(() =>
+						{
+							/* Report score to the server */
+						});
+var finishedBotFlow = BotFlow.DisplayMessage("Very nice! You got all questions right!")
+						.Do(() =>
+						{
+							/* Report score to the server */
+						});
+
+var thirdQuestionBotFlow = BotFlow.DisplayMessage("Nice answer! Now a tough one: How much is 7 * 7?")
+	.WithOption("49", finishedBotFlow)
+	.WithOption("54", wrongAnswerBotFlow)
+	.WithOption("11", wrongAnswerBotFlow);
+
+var secondQuestion = BotFlow.DisplayMessage("Now a tough one: How much is 10 / 5?")
+	.WithOption("2", thirdQuestionBotFlow)
+	.Do(() =>
+	{
+		/* Report score to the server */
+	})
+	.WithOption("5", wrongAnswerBotFlow)
+	.WithOption("1", wrongAnswerBotFlow);
+
+var firstQuestion = BotFlow.DisplayMessage("Let's do this! How much is 2 + 1?")
+	.WithOption("1", wrongAnswerBotFlow)
+	.WithOption("3", secondQuestion)
+	.WithOption("4", wrongAnswerBotFlow);
+
+var botflow = BotFlow.DisplayMessage("This is a small math quiz - are you ready?")
+	.WithOption("Yes", firstQuestion)
+	.WithOption("No", BotFlow.DisplayMessage("Call me when you're ready!"))
+	.FinishWith("Thanks for playing!");
+
+return await Conversation.SendAsync(message, () => botflow.BuildDialogChain());
+```
+
 ### Development
 
 1. Install Visual studio community edition 2015
