@@ -1,9 +1,13 @@
 # FacebookBotDialogFlow
 A framework for building simple Facebook bots that communicate based on dialogs that use buttons like these:
 
-![Alt text](/dialog.png?raw=true "Facebook dialog example")
+![Alt text](/dialog.PNG?raw=true "Facebook dialog example")
 
-Facebook provides APIs that allow bots to display options as buttons. Keeping state for those options, knowing how to build the payload for displaying them interpreting answers can be hard. Usually, when we design a bot we have clarity on the following:
+## Design rationale
+
+The facebook bot framework provides APIs that allow us to build bots - we can interact with them by talking or having them display options as buttons and clicking/tapping them. Certain types of bots are designed based on a flow chart that says what we are going to tell to the user and how we are going to react based on user input.
+
+One flowchart we can use as an example is the following for "Breakfastbot":
 
 ```
 StartMessage: "Hello I am breakfastbot and will do my best to serve you breakfast! Do you want milk?"
@@ -22,12 +26,21 @@ Options "No"
 			Message "Here's a link to our website"
 		Options "No"
 			Message "You must be kidding! Everybody loves breakfast!"
-EndMessage: 
+EndMessage: "Have a nice day!"
 ```
 
-With this DSL, you're able to write the dialog flow in a fashion that very closely ressembles your flow diagrams :grinning:
+Keeping state for the flowchart options, knowing how to build the payload to send to the facebook bot framework and interpreting user input are the main tasks of this bot. One could imagine this type of bot could be useful for providing an interface for ordering and customizing a particular item, learning tools (quiz) among other interactive bot scenarios.
+
+With the Microsoft Bot Framework (or with other bot frameworks), it is possible to build such a "flowchart" bot. However, structuring dialog classes and implementing them to provide support for this sort of bot is not as intuitive, and the code that is produced at the end will likely not look as much like the flowchart above. If this is the case, the code will be hard to write, maintain, and it will be more prone to have bugs.
+
+The FacebookBotDialogFlow is a DSL implemented in C# that allows us to write code that looks like the flowchart above and produces a bot with such functionality.
+
+Here's a working example for the flowchart described above:
 
 ```csharp
+
+// This code goes in your WebApi controller
+
 BotFlow myBotFlow =
 		BotFlow.DisplayMessage("Hello I am breakfastbot and will do my best to serve you breakfast! Do you want milk?")
 			.WithThumbnail("http://www.mysite.com/milk.png")
@@ -61,13 +74,11 @@ BotFlow myBotFlow =
 return await Conversation.SendAsync(message, () => myBotFlow.BuildDialogChain());
 ```
 
-Using these data structures you can form conditions, loops, and take action to successfully interact with your user through a bot.
-
-This library uses the Microsoft Bot Framework. See "BreakFastBot" project as an example.
+Using these data structures you can form conditions, loops, and a flow to successfully interact with your user through a bot - the code closely ressembles the flowchart described above and will be easier to write and maintain.
 
 ### Development
 
 1. Install Visual studio community edition 2015
 2. Open FacebookBotDialogFlow.sln
-3. To run a sample, set it as a startup project and hit "run"
+3. To run a sample, set it as a startup project and hit "run" (Start with "BreakfastBot")
 4. You can use the Microsoft bot framework bot emulator to interact with the bot
