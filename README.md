@@ -3,6 +3,17 @@ A framework for building simple Facebook bots that communicate based on dialogs 
 
 ![Alt text](/dialog.PNG?raw=true "Facebook dialog example")
 
+### Code structure
+1. Implementation of DSL is in "FacebookBotDialogFlow"
+2. Implementation of sample bots is described above and in SampleBots/BreakfastBot and SampleBots/QuizBot
+
+### Development
+
+1. Install Visual studio community edition 2015
+2. Open FacebookBotDialogFlow.sln
+3. To run a sample, set it as a startup project and hit "run" (Start with "BreakfastBot")
+4. You can use the Microsoft bot framework bot emulator to interact with the bot
+
 ## Design rationale
 
 The facebook bot framework provides APIs that allow us to build bots - we can interact with them by writing text or having them display options as buttons and clicking/tapping them. This DSL focuses on the latter.
@@ -122,10 +133,3 @@ var botflow = BotFlow.DisplayMessage("This is a small math quiz - are you ready?
 
 return await Conversation.SendAsync(message, () => botflow.BuildDialogChain());
 ```
-
-### Development
-
-1. Install Visual studio community edition 2015
-2. Open FacebookBotDialogFlow.sln
-3. To run a sample, set it as a startup project and hit "run" (Start with "BreakfastBot")
-4. You can use the Microsoft bot framework bot emulator to interact with the bot
